@@ -422,4 +422,48 @@ public class Solution {
 		}
 	}
 	
+	/*
+	 * Given a binary tree, determine if it is height-balanced.
+	 * For this problem, a height-balanced binary tree is defined as:
+	 * a binary tree in which the left and right subtrees of every node differ in height by no more than 1.
+	 */
+	
+	// Top-down recursive.
+	public boolean isBalancedTopDown(TreeNode root) {
+		
+		if (root == null) return true;
+		
+		int left = isBalancedTopDownHelper(root.left);
+		int right = isBalancedTopDownHelper(root.right);
+		return (Math.abs(left - right) <= 1) && isBalancedTopDown(root.left) && isBalancedTopDown(root.right);
+	}
+	
+	private int isBalancedTopDownHelper(TreeNode node) {
+		
+		if (node == null) return 0;
+		
+		int left = isBalancedTopDownHelper(node.left);
+		int right = isBalancedTopDownHelper(node.right);
+		return 1 + Math.max(left, right);
+	}
+	
+	// Bottom-up recursive.
+	public boolean isBalancedBottomUp(TreeNode root) {
+		
+		if (isBalancedBottomUpHelper(root) == -1) return false;
+		return true;
+	}
+	
+	private int isBalancedBottomUpHelper(TreeNode node) {
+		
+		if (node == null) return 0;
+		
+		int left = isBalancedBottomUpHelper(node.left);
+		if (left == -1) return -1;
+		
+		int right = isBalancedBottomUpHelper(node.right);
+		if (right == -1 || Math.abs(left - right) > 1) return -1;
+		
+		return 1 + Math.max(left, right);
+	}
 }
