@@ -466,4 +466,100 @@ public class Solution {
 		
 		return 1 + Math.max(left, right);
 	}
+	
+	/*
+	 * Given a binary tree, find its minimum depth.
+	 * The minimum depth is the number of nodes along the
+	 * shortest path from the root node down to the nearest leaf node.
+	 */
+	
+	// Recursive DFS (inefficient).
+	public int minDepthRec(TreeNode root) {
+		
+		if (root == null) return 0;
+		
+		int left = minDepthRec(root.left);
+		int right = minDepthRec(root.right);
+		if (left == 0) return 1 + right;
+		if (right == 0) return 1 + left;
+		return 1 + Math.min(left, right);
+	}
+	
+	// Recursive BFS.
+	public int minDepthRecBFS(TreeNode root) {
+		
+		if (root == null) return 0;
+		
+		if (root.left != null && root.right != null) return Math.min(minDepthRecBFS(root.left) + 1, minDepthRecBFS(root.right) + 1);
+		if (root.left != null) return 1 + minDepthRecBFS(root.left);
+		return 1 + minDepthRecBFS(root.right);
+	}
+	
+	// Iterative BFS using queue.
+	public int minDepthIterBFS(TreeNode root) {
+		
+		if (root == null) return 0;
+		
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		int depth = 1;
+		
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			while (size > 0) {
+				TreeNode curr = queue.poll();
+				if (curr != null) {
+					if (curr.left == null & curr.right == null) return depth;
+					queue.offer(curr.left);
+					queue.offer(curr.right);
+				}
+				size--;
+			}
+			depth++;
+		}
+		return depth;
+	}
+	
+	/*
+	 * Given the root of a binary tree and an integer targetSum, 
+	 * return true if the tree has a root-to-leaf path such that 
+	 * adding up all the values along the path equals targetSum.
+	 */
+	
+	// Recursive.
+	public boolean hasPathSumRec(TreeNode root, int targetSum) {
+		
+		if (root == null) return false;
+		if (root.left == null && root.right == null) return root.val == targetSum;
+		return hasPathSumRec(root.left, targetSum - root.val) || hasPathSumRec(root.right, targetSum - root.val);
+	}
+	
+	// DFS Iterative using stack.
+	public boolean hasPathSumIter(TreeNode root, int targetSum) {
+		
+		if (root == null) return false;
+		if (root.left == null && root.right == null) return root.val == targetSum;
+		
+		Stack<TreeNode> nodes = new Stack<>();
+		Stack<Integer> sums = new Stack<>();
+		nodes.push(root);
+		sums.push(targetSum - root.val);
+		
+		while (!nodes.isEmpty()) {
+			TreeNode curr = nodes.pop();
+			int remainSum = sums.pop();
+			if (curr.left == null && curr.right == null && remainSum == 0) return true;
+			
+			if (curr.left != null) {
+				nodes.push(curr.left);
+				sums.push(remainSum - curr.left.val);
+			}
+			
+			if (curr.right != null) {
+				nodes.push(curr.right);
+				sums.push(remainSum - curr.right.val);
+			}
+		}
+		return false;
+	}
 }
