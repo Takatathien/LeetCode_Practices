@@ -562,4 +562,72 @@ public class Solution {
 		}
 		return false;
 	}
+	
+	/*
+	 * Given an integer numRows, return the first numRows of Pascal's triangle.
+	 * In Pascal's triangle, each number is the sum of the two numbers directly above it.
+	 */
+	
+	public List<List<Integer>> generate (int numRows) {
+		
+		List<List<Integer>> res = new ArrayList<>();
+		res.add(new ArrayList<>());
+		res.get(0).add(1);
+		
+		for (int i = 1; i < numRows; i++) {
+			List<Integer> row = new ArrayList<>();
+			List<Integer> prevRow = res.get(i - 1);
+			row.add(1);
+			
+			for (int j = 1; j < i; j++) {
+				row.add(prevRow.get(j) + prevRow.get(j - 1));
+			}
+			
+			row.add(1);
+			res.add(row);
+		}
+		
+		return res;
+	}
+	
+	/*
+	 * Given an integer rowIndex, return the rowIndexth (0-indexed) row of the Pascal's triangle.
+	 */
+	
+	// Dynamic programming solution.
+	public List<Integer> getRowDP(int rowIndex) {
+		
+		List<Integer> res = new ArrayList<>(rowIndex + 1);
+		res.add(1);
+		
+		for (int i = 0; i < rowIndex; i++) {
+			
+			for (int j = i; j > 0; j--) {
+				res.set(j, res.get(j) + res.get(j - 1));
+			}
+			
+			res.add(1);
+		}
+		
+		return res;
+	}
+	
+	// Brute force solution.
+	public List<Integer> getRowBF(int rowIndex) {
+		
+		if (rowIndex == 0) return Arrays.asList(1);
+		
+		if (rowIndex == 1) return Arrays.asList(1, 1);
+		
+		List<Integer> prev = getRowBF(rowIndex - 1);
+		List<Integer> curr = new ArrayList<>(rowIndex + 1);
+		curr.add(1);
+		
+		for (int i = 1; i < rowIndex; i++) {
+			curr.add(prev.get(i) + prev.get(i - 1));
+		}
+		
+		curr.add(1);
+		return curr;
+	}
 }
