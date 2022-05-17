@@ -630,4 +630,59 @@ public class Solution {
 		curr.add(1);
 		return curr;
 	}
+	
+	/*
+	 * You are given an array prices where prices[i] is the price of a given stock on the ith day.
+	 * You want to maximize your profit by choosing a single day 
+	 * to buy one stock and choosing a different day in the future to sell that stock.
+	 * Return the maximum profit you can achieve from this transaction.
+	 * If you cannot achieve any profit, return 0.
+	 */
+	
+	// Brute force approach.
+	// O(n^2); O(1);
+	public int maxProfitBF(int[] prices) {
+		int maxProfit = 0;
+		
+		for (int i = 0; i < prices.length - 1; i++) {
+			for (int j = i + 1; j < prices.length; j++) {
+				int profit = prices[j] - prices[i];
+				if (profit > maxProfit) maxProfit = profit;
+			}
+		}
+		
+		return maxProfit;
+	}
+	
+	// One pass approach.
+	// O(n); O(1);
+	
+	public int maxProfitOP(int[] prices) {
+		int buy = Integer.MAX_VALUE;
+		int profit = 0;
+		
+		for (int i = 0; i < prices.length; i++) {
+			buy = Math.min(buy, prices[i]);
+			profit = Math.max(profit, prices[i] - buy);
+		}
+		
+		return profit;
+	}
+	
+	/*
+	 * Given a string s, return true if it is a palindrome, or false otherwise.
+	 */
+	
+	// O(n); O(1)
+	public boolean isPalindrome(String s) {
+		s = s.replaceAll("[^A-Za-z0-9]", "");
+		s = s.toLowerCase();
+		
+		for (int i = 0, j = s.length() - 1; i < j; i++, j--) {
+			if (s.charAt(i) != s.charAt(j)) return false;
+		}
+		
+		return true;
+	}
+	
 }
