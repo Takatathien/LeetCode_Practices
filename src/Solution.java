@@ -685,4 +685,29 @@ public class Solution {
 		return true;
 	}
 	
+	/*
+	 * Given a non-empty array of integers nums, every element appears twice except for one.
+	 * Find that single one.
+	 * 
+	 * You must implement a solution with a linear runtime complexity and use only constant extra space.
+	 */
+	
+	// O(n); O(1)
+	public int singleNumber(int[] nums) {
+		
+		int res = 0;
+		
+		for (int num : nums) {
+			// Using XOR operator to solve the problem.
+			// res XOR 0 = res
+			// num XOR num = 0;
+			// res XOR num XOR num = res
+			res ^= num;
+		}
+		
+		return res;
+	}
+	
+	
+	
 }
