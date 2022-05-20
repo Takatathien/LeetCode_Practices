@@ -708,6 +708,28 @@ public class Solution {
 		return res;
 	}
 	
+	/*
+	 * Given the root of a binary tree, return the preorder traversal of its nodes' values.
+	 */
 	
+	// O(n); O(n)
+	public List<Integer> preorderTraversal(TreeNode root) {
+		
+		List<Integer> list = new ArrayList<>();
+		Stack<TreeNode> stack = new Stack<>();
+		stack.push(root);
+		
+		while (!stack.isEmpty()) {
+			TreeNode curr = stack.pop();
+			
+			if (curr != null) {
+				list.add(curr.val);
+				stack.push(curr.right); // Right child pushed in stack first to be popped out last.
+				stack.push(curr.left);
+			}
+		}
+		
+		return list;
+	}
 	
 }
